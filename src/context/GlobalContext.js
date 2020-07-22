@@ -30,6 +30,19 @@ export const GlobalProvider = ({ children }) => {
         })
     }
 
+    function remove_from_cart(productID) {
+        dispatch({
+            type: 'REMOVE_FROM_CART',
+            payload: productID
+        })
+    }
+
+    function checkout() {
+        dispatch({
+            type: 'CHECKOUT',
+        })
+    }
+
     function inc_qty(data) {
         dispatch({
             type: "INC_QTY",
@@ -50,6 +63,8 @@ export const GlobalProvider = ({ children }) => {
             update_all_products,
             push_to_cart,
             inc_qty,
+            remove_from_cart,
+            checkout,
         }}>
             {children}
         </GlobalContext.Provider>

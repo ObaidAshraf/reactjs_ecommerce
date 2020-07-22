@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Suspense } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 // import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -24,11 +24,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <LinkURL color="inherit" href="https://material-ui.com/">
-        Your Website
-      </LinkURL>{' '}
       {new Date().getFullYear()}
-      {'.'}
+      {'.'} All Rights Reserved
     </Typography>
   );
 }
@@ -70,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -109,7 +106,7 @@ export default function Album() {
       <Topbar />
       <main>
         {/* Hero unit */}
-        <div className={classes.heroContent}>
+        {/* <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Album layout
@@ -134,7 +131,7 @@ export default function Album() {
               </Grid>
             </div>
           </Container>
-        </div>
+        </div> */}
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
@@ -174,12 +171,6 @@ export default function Album() {
       </main>
       {/* Footer */}
       <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
         <Copyright />
       </footer>
       {/* End footer */}

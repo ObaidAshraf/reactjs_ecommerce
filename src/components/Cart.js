@@ -12,7 +12,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,18 +24,21 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import Topbar from '../components/Topbar'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { GlobalContext } from '../context/GlobalContext'
+import { Link } from 'react-router-dom';
 
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
+      {'.'} All Rights Reserved
     </Typography>
   );
 }
@@ -72,10 +74,6 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     flexGrow: 1,
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
   table: {
     minWidth: 650,
   },
@@ -96,11 +94,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Cart() {
   const classes = useStyles();
-  const { cart, cost, totalCost, deliveryFee, inc_qty } = useContext(GlobalContext)
+  const { cart, cost, totalCost, deliveryFee, inc_qty, remove_from_cart, items, checkout } = useContext(GlobalContext)
   let [products, setProducts] = useState([])
   let [pQty, setProductQty] = useState({})
   let [itemsCount, setItemsCount] = useState(0)
+  const [open, setOpen] = React.useState(false);
 
+  const handleClickOpen = () => {
+    if (items)
+      setOpen(true);
+  };
+
+  const handleClose = () => {
+    handleCheckout()
+    setOpen(false);
+  };
+
+  const handleCheckout = () => {
+    checkout()
+  }
 
   useEffect( () => {
     let _count = 0
@@ -116,6 +128,11 @@ export default function Cart() {
     let pid = evt.target.id
     pQty[pid] = ++pQty[pid]
     inc_qty([pid, ++pQty[pid]])
+  }
+
+  function handleRemove(evt) {
+    let pid = evt.target.id
+    remove_from_cart(pid)
   }
 
 
@@ -168,7 +185,7 @@ export default function Cart() {
                               </Grid>
                             </TableCell>
                             <TableCell>
-                              <ClearIcon />
+                              <ClearIcon id={product.id} className={classes.icon} onClick={handleRemove} />
                             </TableCell>
                             </TableRow>
                         ))}
@@ -205,25 +222,39 @@ export default function Cart() {
                       {/* <Box fontWeight={500}>${totalCost.toFixed(2)}</Box> */}
                     </Typography>
                   </Grid>
-                  <Button fullWidth={true} variant="contained" color="dafault" className={classes.button}>
+                  <Button fullWidth={true} variant="contained" color="dafault" className={classes.button} onClick={handleClickOpen}>
                     Checkout
                   </Button>
                 </Grid>
             </Grid>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Typography align="left" variant="subtitle1" color="textPrimary">
+                Continue Shopping
+              </Typography>
+            </Link>
           </Container>
         </div>
       </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Thankyou for shopping with us.</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Your Order has been dispatched and will be delivered to you in 5 working days.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Link to="/" onClick={handleCheckout} style={{ textDecoration: 'none' }}>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+          </Link>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }

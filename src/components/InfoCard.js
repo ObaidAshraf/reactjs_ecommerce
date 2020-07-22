@@ -24,6 +24,16 @@ import Topbar from '../components/Topbar'
 import { useParams, Link } from 'react-router-dom'
 import { GlobalContext } from '../context/GlobalContext'
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      {new Date().getFullYear()}
+      {'.'} All Rights Reserved
+    </Typography>
+  );
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // display: 'flex',
@@ -68,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     width: '100%',
   },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2),
+  },
 }));
 
 export default function MediaControlCard() {
@@ -83,13 +97,10 @@ export default function MediaControlCard() {
   }, [])
 
   function handleClick() {
-    console.log(product)
     if (product["qty"]) {
-      console.log("Qty exists")
       product["qty"] = ++product["qty"]
     }
     else {
-      console.log("Qty doesn't exist")
       product["qty"] = 1
     }
 
