@@ -1,12 +1,14 @@
 function findProduct(id, array) {
     let isExist = false
     let arr_id = -1
+    console.log(id, array)
     array.map((data, idx) => {
-        if (data.id == id) {
+        if (Number(data.id) === Number(id)) {
             isExist = true
             arr_id = idx
             return true
         }
+        return false
     })
     return [isExist, arr_id]
 }
@@ -48,15 +50,15 @@ function AppReducer(state, action) {
 
         case 'REMOVE_FROM_CART':
             let res2 = findProduct(action.payload, state.cart)
-            // console.log(res2)
+            console.log(res2)
             let _cart2 = state.cart
             let _product = _cart2[res2[1]]
-            let pQty = _product["qty"]
-            let pCost = _product["price"]
+            let pQty = Number(_product["qty"])
+            let pCost = Number(_product["price"])
             let _newCost = Math.round((state.totalCost - (pQty * pCost)))
             let _newItemCost = Number(state.cost - (pQty * pCost))
-            let _newCart = _cart2.filter(product => product.id != action.payload)
-            if (_newCart.length == 0) {
+            let _newCart = _cart2.filter(product => Number(product.id) !== Number(action.payload))
+            if (_newCart.length === 0) {
                 _newCost -= 50
             }
             return {

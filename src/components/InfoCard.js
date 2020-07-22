@@ -1,38 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-// import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-// import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-// import SkipNextIcon from '@material-ui/icons/SkipNext';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import Topbar from '../components/Topbar'
-
 import { useParams, Link } from 'react-router-dom'
 import { GlobalContext } from '../context/GlobalContext'
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {'.'} All Rights Reserved
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,15 +65,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MediaControlCard() {
   const classes = useStyles();
-  const theme = useTheme();
   const { id } = useParams()
   const { allProducts, push_to_cart } = useContext(GlobalContext)
   let [product, setProduct] = useState({})
-  let [redirect, setRedirect] = useState(false)
 
-  useEffect( () => {
+  useEffect( () => (
     setProduct(allProducts[id])
-  }, [])
+  ), [ allProducts, id ])
 
   function handleClick() {
     if (product["qty"]) {
@@ -119,20 +96,13 @@ export default function MediaControlCard() {
           <CardMedia
             className={classes.cover}
             image={product ? product.image : null}
-            // image="https://source.unsplash.com/random"
             title={product ? product.title : ''}
           />
         {/* </div> */}
         </Grid>
         <Grid item xs={12} sm={6} lg={6}>
-        {/* <div className={classes.details}> */}
           <CardContent className={classes.content}>
-            {/* <Typography component="h5" variant="h5">
-              Live From Space
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              Mac Miller
-            </Typography> */}
+
               <Typography component="h1" variant="h5">
                 {product ? product.title : ''}
               </Typography>

@@ -6,7 +6,6 @@ import {
   Switch, 
   BrowserRouter as  Router, 
   Route,
-  useRouteMatch, 
 } from 'react-router-dom'
 import { GlobalProvider } from './context/GlobalContext'
 

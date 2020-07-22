@@ -1,14 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-// import CameraIcon from '@material-ui/icons/PhotoCamera';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -17,11 +11,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
+// import RemoveIcon from '@material-ui/icons/Remove';
+// import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import Topbar from '../components/Topbar'
 import Dialog from '@material-ui/core/Dialog';
@@ -33,15 +26,6 @@ import { GlobalContext } from '../context/GlobalContext'
 import { Link } from 'react-router-dom';
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {'.'} All Rights Reserved
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -94,9 +78,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Cart() {
   const classes = useStyles();
-  const { cart, cost, totalCost, deliveryFee, inc_qty, remove_from_cart, items, checkout } = useContext(GlobalContext)
+  const { cart, cost, totalCost, deliveryFee, remove_from_cart, items, checkout } = useContext(GlobalContext)
   let [products, setProducts] = useState([])
-  let [pQty, setProductQty] = useState({})
   let [itemsCount, setItemsCount] = useState(0)
   const [open, setOpen] = React.useState(false);
 
@@ -117,18 +100,13 @@ export default function Cart() {
   useEffect( () => {
     let _count = 0
     setProducts(cart)
-    cart.map(product => {
+    cart.map(product => (
       // pQty[product.id] = product.qty
       _count += product.qty
-    })
+    ))
+
     setItemsCount(_count)
   }, [ cart ])
-
-  function handleIncrease(evt) {
-    let pid = evt.target.id
-    pQty[pid] = ++pQty[pid]
-    inc_qty([pid, ++pQty[pid]])
-  }
 
   function handleRemove(evt) {
     let pid = evt.target.id
